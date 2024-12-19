@@ -141,4 +141,14 @@
 			    -webkit-animation-iteration-count:  1;
 			    -webkit-animation-timing-function: ease-out;
 			    }
+
+
+/* Style for the construction image */
+#construction-img {
+    margin-top: 20px;
+    max-width: 100%; /* Makes the image responsive */
+    height: auto;    /* Maintains aspect ratio */
+    border: 3px solid white; /* Optional: adds a border */
+    border-radius: 10px;     /* Optional: rounds the corners */
+}
 		
