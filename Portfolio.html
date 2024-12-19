@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple HTML Page</title>
+  <style>
+    /* Inline CSS */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+      margin: 20px 0;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to My Simple Page</h1>
+  <button onclick="showMessage()">Click Me</button>
+  <div id="message"></div>
+
+  <script>
+    // Inline JavaScript
+    function showMessage() {
+      const messageDiv = document.getElementById('message');
+      messageDiv.innerText = "Hello, world! You clicked the button!";
+    }
+  </script>
+</body>
+</html>
