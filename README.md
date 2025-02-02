@@ -15,13 +15,13 @@ Hi! I'm **Nikhil**, a passionate software developer with expertise in **Swift, m
 ## 📂 Projects
 Here are some of the projects I've worked on:
 
-### 🔹 [VTPreferenceMac](https://github.com/yourusername/VTPreferenceMac)
+### 🔹 PreferenceMac
 A macOS preference view controller with navigation, search, and customization options.
 
-### 🔹 [ZohoMail UI Testing](https://github.com/yourusername/ZohoMail-UI-Testing)
-Automated UI testing for ZohoMail using TridentPageObjectModel and ZMacUIAutomationUtil.
+### 🔹 ZohoMail UI Testing
+Automated UI testing for ZohoMail.
 
-### 🔹 [Azure Role-Based Authentication](https://github.com/yourusername/Azure-Auth)
+### 🔹 Azure Role-Based Authentication
 Implemented OAuth-based authentication for a website hosted on Azure with MongoDB and APIM.
 
 ## 📬 Get in Touch
