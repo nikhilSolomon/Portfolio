@@ -909,3 +909,36 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #1ee2e7;
 }
+
+/* Style for <h3> headings */
+.modal-body h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff; /* Blue color */
+    margin-top: 20px;
+}
+
+/* Style for <ul> lists */
+.modal-body ul {
+    list-style-type: square; /* Remove default bullets */
+    text-align: left;
+    padding: 0;
+}
+
+/* Style for <li> elements */
+.modal-body ul li {
+    padding: 8px 12px;
+    font-size: 16px;
+    color: #333;
+    background: #f8f9fa; /* Light background */
+    margin-bottom: 6px;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect for list items */
+.modal-body ul li:hover {
+    background: #007bff;
+    color: #fff;
+    border-left: 4px solid #0056b3; /* Darker blue */
+}
