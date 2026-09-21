@@ -1,0 +1,12 @@
+<%- include('_top', { title: 'Sign in' }) %>
+<div class="auth">
+  <h1>Sign in</h1>
+  <% if (error) { %><div class="alert"><%= error %></div><% } %>
+  <form method="post" action="/admin/login" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="next" value="<%= next %>">
+    <label>Password<input type="password" name="password" required autofocus autocomplete="current-password"></label>
+    <button class="btn primary">Sign in</button>
+  </form>
+  <p class="muted small">Forgot it? Run <code>npm run reset-password</code> on the server.</p>
+</div>
+<%- include('_bottom') %>

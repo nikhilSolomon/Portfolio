@@ -1,0 +1,19 @@
+<%- include('_top', { title }) %>
+<div class="page-head"><h1>Messages</h1></div>
+<% if (!mail) { %><div class="alert info">Email notifications are off. Set <code>SMTP_HOST</code>, <code>SMTP_USER</code>, <code>SMTP_PASS</code> and <code>CONTACT_TO</code> in <code>.env</code> to get messages by email as well.</div><% } %>
+<% if (!list.length) { %><p class="muted">No messages yet.</p><% } %>
+<ul class="mlist">
+  <% list.forEach(m => { %>
+  <li class="<%= m.read ? '' : 'unread' %>">
+    <div class="mhead"><b><%= m.name %></b> <a href="mailto:<%= m.email %>"><%= m.email %></a><span class="muted small"><%= m.created_at %> UTC<%= m.emailed ? ' · emailed' : '' %></span></div>
+    <div class="msubj"><%= m.subject || '(no subject)' %></div>
+    <p class="mbody"><%- (m.body || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') %></p>
+    <div class="acts">
+      <a class="btn small" href="mailto:<%= m.email %>?subject=Re: <%= encodeURIComponent(m.subject || 'your message') %>">Reply</a>
+      <% if (!m.read) { %><form method="post" action="/admin/messages/<%= m.id %>/read"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn small">Mark read</button></form><% } %>
+      <form method="post" action="/admin/messages/<%= m.id %>/delete" data-confirm="Delete this message?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn small danger">Delete</button></form>
+    </div>
+  </li>
+  <% }) %>
+</ul>
+<%- include('_bottom') %>

@@ -1,0 +1,13 @@
+<%- include('_top', { title: 'Set up admin' }) %>
+<div class="auth">
+  <h1>Welcome. Set your admin password.</h1>
+  <p class="muted">This runs once. You'll use this password to sign in at <code>/admin</code>. Use at least 10 characters.</p>
+  <% if (error) { %><div class="alert"><%= error %></div><% } %>
+  <form method="post" action="/admin/setup" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Password<input type="password" name="password" minlength="10" required autofocus autocomplete="new-password"></label>
+    <label>Confirm password<input type="password" name="confirm" minlength="10" required autocomplete="new-password"></label>
+    <button class="btn primary">Create admin account</button>
+  </form>
+</div>
+<%- include('_bottom') %>

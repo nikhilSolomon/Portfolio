@@ -1,0 +1,24 @@
+<%- include('_top', { title }) %>
+<div class="page-head"><h1>Analytics</h1><div class="seg"><% [7,30,90].forEach(d => { %><a href="/admin/analytics?days=<%= d %>" class="<%= days === d ? 'on' : '' %>"><%= d %>d</a><% }) %></div></div>
+<p class="muted small">Privacy-friendly: no cookies, visitors are counted by a daily-rotating hash. Bots are filtered by user agent.</p>
+<div class="tiles">
+  <div class="tile"><b><%= s.totals.views || 0 %></b><span>page views</span></div>
+  <div class="tile"><b><%= s.totals.visitors || 0 %></b><span>unique visitors</span></div>
+  <div class="tile"><b><%= s.totals.project_opens || 0 %></b><span>project opens</span></div>
+  <div class="tile"><b><%= s.totals.contacts || 0 %></b><span>contact messages</span></div>
+  <div class="tile"><b><%= s.totals.not_found || 0 %></b><span>broken-link hits</span></div>
+</div>
+<section class="card">
+  <h2>Views per day</h2>
+  <% const max = Math.max(1, ...s.daily.map(d => d.views)); %>
+  <% if (!s.daily.length) { %><p class="muted">No data yet.</p><% } else { %>
+  <div class="bars" style="--n:<%= s.daily.length %>"><% s.daily.forEach(d => { %><div class="bar" style="--h:<%= (d.views / max * 100).toFixed(1) %>%" title="<%= d.day %>: <%= d.views %> views, <%= d.visitors %> visitors"><i></i><span><%= d.day.slice(5) %></span></div><% }) %></div>
+  <% } %>
+</section>
+<div class="cols">
+  <section class="card"><h2>Most opened projects</h2><table class="tbl"><% s.topProjects.forEach(r => { %><tr><td><a href="<%= r.path %>" target="_blank"><%= r.path %></a></td><td class="num"><%= r.n %></td></tr><% }) %><% if (!s.topProjects.length) { %><tr><td class="muted">None yet</td></tr><% } %></table></section>
+  <section class="card"><h2>Top pages</h2><table class="tbl"><% s.pages.forEach(r => { %><tr><td><%= r.path %></td><td class="num"><%= r.n %></td></tr><% }) %><% if (!s.pages.length) { %><tr><td class="muted">None yet</td></tr><% } %></table></section>
+  <section class="card"><h2>Referrers</h2><table class="tbl"><% s.referrers.forEach(r => { %><tr><td><%= r.ref %></td><td class="num"><%= r.n %></td></tr><% }) %><% if (!s.referrers.length) { %><tr><td class="muted">Direct traffic only</td></tr><% } %></table></section>
+  <section class="card"><h2>Broken links (404)</h2><table class="tbl"><% s.notFound.forEach(r => { %><tr><td><code><%= r.path %></code><br><span class="muted small">last <%= r.last %></span></td><td class="num"><%= r.n %></td></tr><% }) %><% if (!s.notFound.length) { %><tr><td class="muted">No 404s recorded</td></tr><% } %></table></section>
+</div>
+<%- include('_bottom') %>

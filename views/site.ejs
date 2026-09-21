@@ -1,0 +1,143 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <section class="hero">
+    <canvas id="orbs" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <% if (site.eyebrow || site.available) { %><span class="eyebrow"><% if (site.available) { %><span class="dot"></span><% } %><%= site.available && site.availability_text ? site.availability_text + ' · ' : '' %><%= site.eyebrow %></span><% } %>
+      <h1 id="headline"><%- headlineHtml %></h1>
+      <div class="hero-foot">
+        <p class="roles"><%= site.name %>, <span class="slot" id="roleSlot"><% (site.roles || []).forEach((r, i) => { %><span class="<%= i === 0 ? 'on' : '' %>"><%= r %></span><% }) %></span></p>
+        <div class="cta">
+          <a class="btn primary magnet" href="#work"><span>See selected work</span><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="btn magnet" href="#contact"><span>Get in touch</span></a>
+          <% if (site.resume_url) { %><a class="btn magnet" href="<%= site.resume_url %>" target="_blank" rel="noopener" data-cta="resume"><span>Résumé</span><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a><% } %>
+        </div>
+      </div>
+      <div class="scroll-hint mono"><i></i>Scroll to explore</div>
+    </div>
+  </section>
+
+  <% if ((site.skills || []).length) { %>
+  <div class="marquee" aria-hidden="true"><div class="track" id="track"><% site.skills.forEach(s => { %><span><%= s %></span><% }) %></div></div>
+  <% } %>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <h2>Selected work<sup><%= String(projects.length).padStart(2, '0') %> projects</sup></h2>
+        <p>Things I've built and worked on. Tap any project for the story behind it.</p>
+      </div>
+      <% if (!projects.length) { %><div class="empty">No projects published yet.</div><% } %>
+      <div class="work-grid" id="workGrid">
+        <% projects.forEach(p => { %>
+        <a class="card" href="/work/<%= p.slug %>" data-slug="<%= p.slug %>" data-reveal>
+          <div class="cover">
+            <% if (p.cover) { %><img src="<%= p.cover %>" alt="<%= p.title %> cover" loading="lazy"><% } else { %><canvas data-seed="<%= p.seed %>" data-hue="<%= p.hue %>"></canvas><% } %>
+            <span class="peek"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+          </div>
+          <div class="card-meta"><h3><span><%= p.title %></span></h3><span class="mono"><%= p.year %></span></div>
+          <div class="tags"><% p.tags.forEach(t => { %><span class="tag"><%= t %></span><% }) %></div>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div class="portrait" data-reveal>
+        <canvas id="portraitCanvas" aria-label="Abstract portrait"></canvas>
+        <span class="initials"><%= site.initials %></span>
+        <svg class="badge" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#circ">build · measure · improve · build · measure · improve · </textPath></text></svg>
+      </div>
+      <div class="about-copy" data-reveal>
+        <p class="mono" style="margin:0 0 18px">About</p>
+        <h2><%= site.about_heading %></h2>
+        <% (site.about || []).forEach(par => { %><p><%= par %></p><% }) %>
+        <% if ((site.stats || []).length) { %>
+        <div class="stats"><% site.stats.forEach(s => { const m = String(s.value).match(/^([\d.]+)(.*)$/); %><div class="stat"><b><% if (m) { %><span data-count="<%= m[1] %>"><%= m[1] %></span><i><%= m[2] %></i><% } else { %><%= s.value %><% } %></b><span><%= s.label %></span></div><% }) %></div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <% if ((site.what_i_do || []).length) { %>
+      <div class="sec-head" data-reveal><h2>What I do<sup><%= site.what_i_do.length %> areas</sup></h2><p>The kinds of problems I work on day to day.</p></div>
+      <div class="steps" data-reveal>
+        <% site.what_i_do.forEach((w, i) => { %>
+        <div class="step" aria-expanded="<%= i === 0 %>">
+          <button class="step-btn" aria-controls="s<%= i %>"><span class="num"><%= String(i + 1).padStart(2, '0') %></span><h3><%= w.title %></h3><span class="plus"></span></button>
+          <div class="step-body" id="s<%= i %>"><div><p><%= w.text %></p></div></div>
+        </div>
+        <% }) %>
+      </div>
+      <% } %>
+      <% if ((site.timeline || []).length) { %>
+      <div class="sec-head" data-reveal style="margin-top:clamp(72px,10vw,120px)"><h2>Experience</h2></div>
+      <ul class="timeline" data-reveal>
+        <% site.timeline.forEach(t => { %><li><span class="when"><%= t.when %></span><div class="what"><b><%= t.title %></b><span><%= t.text %></span></div></li><% }) %>
+      </ul>
+      <% } %>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <% if ((site.skill_groups || []).length) { %>
+      <div class="sec-head" data-reveal><h2>Technical skills</h2><p>Languages, frameworks and tools I use in production.</p></div>
+      <div class="skill-groups" data-reveal>
+        <% site.skill_groups.forEach(g => { %><div class="sg"><h3><%= g.name %></h3><div class="tags"><% g.items.forEach(i => { %><span class="tag"><%= i %></span><% }) %></div></div><% }) %>
+      </div>
+      <% } %>
+      <% if ((site.approach || []).length) { %>
+      <div class="sec-head" data-reveal style="margin-top:clamp(72px,10vw,120px)"><h2>Engineering approach</h2><p>I focus on:</p></div>
+      <ul class="approach" data-reveal><% site.approach.forEach(a => { %><li><i></i><%= a %></li><% }) %></ul>
+      <% } %>
+      <% if (site.career_goal) { %><div class="goal" data-reveal><span class="mono">Career goal</span><p><%= site.career_goal %></p></div><% } %>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap" data-reveal>
+      <p class="mono" style="margin:0 0 18px">Contact</p>
+      <h2>Have an idea?<br><span class="outline">Let's make it</span> real.</h2>
+      <div class="contact-grid">
+        <div>
+          <% if (site.email) { %><a class="mail" id="mailLink" href="mailto:<%= site.email %>"><span><%= site.email %></span><span class="copy">copy</span></a><% } %>
+          <% const socials = (site.socials || []).filter(s => s.url); if (socials.length) { %>
+          <div class="socials"><% socials.forEach(s => { %><a href="<%= s.url %>" target="_blank" rel="noopener"><%= s.label %> &nearr;</a><% }) %></div>
+          <% } %>
+        </div>
+        <form class="cf" id="contactForm" novalidate>
+          <div class="f2">
+            <label>Name<input name="name" type="text" autocomplete="name" required maxlength="120"></label>
+            <label>Email<input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+          </div>
+          <label>Subject<input name="subject" type="text" maxlength="200" placeholder="What's this about?"></label>
+          <label>Message<textarea name="body" required minlength="10" maxlength="5000" placeholder="A few lines about what you have in mind."></textarea></label>
+          <label class="hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+          <input type="hidden" name="t" value="<%= Date.now() %>">
+          <div class="msg" id="cfMsg" role="status"></div>
+          <div class="foot"><small>I reply within a couple of days.</small><button class="btn primary" type="submit"><span>Send message</span><svg viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="sheet">
+    <div class="grab"></div>
+    <button class="icon-btn close" id="modalClose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <p class="mono" id="modalKicker"></p>
+    <h3 id="modalTitle"></h3>
+    <div class="cover" id="modalCover"></div>
+    <div class="facts" id="modalFacts"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<script id="projects-data" type="application/json"><%- JSON.stringify(clientProjects).replace(/</g, '\\u003c') %></script>
+<%- include('partials/footer') %>

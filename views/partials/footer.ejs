@@ -1,0 +1,28 @@
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year"><%= new Date().getFullYear() %></span> <%= site.name %>. Designed and built by hand.</span>
+    <span class="clock"><%= site.location %> &middot; <span id="clock">--:--:--</span></span>
+    <a href="#top">Back to top &uarr;</a>
+  </div>
+</footer>
+<div id="notfound" role="alertdialog" aria-labelledby="nfTitle" aria-hidden="true">
+  <div class="inner">
+    <span class="mono">Error 404 &middot; Page not found</span>
+    <div class="code" aria-label="404"><span>4</span><span>0</span><span>4</span></div>
+    <h2 id="nfTitle">This page wandered off the map.</h2>
+    <p>The link may be old, mistyped, or the page has moved. Head back to the start, or jump straight to a section below.</p>
+    <div class="path"><span class="mono">You tried</span><b id="nfPath"></b></div>
+    <div class="actions">
+      <a class="btn primary" href="/#top" data-nf-close><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Take me home</span></a>
+      <a class="btn" href="/#contact" data-nf-close><span>Report a broken link</span></a>
+    </div>
+    <div class="shortcuts">
+      <a href="/#work" data-nf-close><small>01</small>Work</a><a href="/#about" data-nf-close><small>02</small>About</a><a href="/#skills" data-nf-close><small>03</small>Skills</a><a href="/#contact" data-nf-close><small>04</small>Contact</a>
+    </div>
+  </div>
+</div>
+<div id="toast" role="status">Copied to clipboard</div>
+<script>window.__SITE__ = <%- JSON.stringify({ timezone: site.timezone || 'UTC', email: site.email || '', name: site.name, static: !!(typeof staticMode !== 'undefined' && staticMode) }).replace(/</g, '\\u003c') %>;</script>
+<script src="/site.js" defer></script>
+</body>
+</html>

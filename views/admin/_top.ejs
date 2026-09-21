@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title><%= title %> · Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/admin/admin.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body class="admin">
+<% if (typeof user !== 'undefined' && user) { %>
+<aside class="side">
+  <a class="brand" href="/admin"><i></i><%= site.initials %><span>Admin</span></a>
+  <nav>
+    <a href="/admin" class="<%= path === '/' ? 'on' : '' %>">Dashboard</a>
+    <a href="/admin/projects" class="<%= path.startsWith('/projects') ? 'on' : '' %>">Projects</a>
+    <a href="/admin/content" class="<%= path.startsWith('/content') ? 'on' : '' %>">Site content</a>
+    <a href="/admin/messages" class="<%= path.startsWith('/messages') ? 'on' : '' %>">Messages <% if (unread) { %><b class="pill"><%= unread %></b><% } %></a>
+    <a href="/admin/analytics" class="<%= path.startsWith('/analytics') ? 'on' : '' %>">Analytics</a>
+    <a href="/admin/password" class="<%= path.startsWith('/password') ? 'on' : '' %>">Password</a>
+  </nav>
+  <div class="side-foot">
+    <a href="/" target="_blank" rel="noopener">View site &nearr;</a>
+    <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="linkish">Log out</button></form>
+  </div>
+</aside>
+<button class="side-toggle" id="sideToggle" aria-label="Menu">☰</button>
+<% } %>
+<main class="content">
+<% if (typeof flash !== 'undefined' && flash) { %><div class="flash"><%= flash %></div><% } %>

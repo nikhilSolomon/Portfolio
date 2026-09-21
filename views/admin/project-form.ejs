@@ -1,0 +1,69 @@
+<%- include('_top', { title }) %>
+<div class="page-head"><h1><%= isNew ? 'New project' : 'Edit project' %></h1><% if (!isNew) { %><a class="btn" href="/work/<%= p.slug %>" target="_blank">View on site &nearr;</a><% } %></div>
+<% if (error) { %><div class="alert"><%= error %></div><% } %>
+<form method="post" enctype="multipart/form-data" class="form-grid" action="<%= isNew ? '/admin/projects/new' : '/admin/projects/' + p.id %>">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="main">
+    <section class="card">
+      <label>Title<input name="title" value="<%= p.title || '' %>" required maxlength="120"></label>
+      <div class="two">
+        <label>URL slug <small class="muted">/work/…</small><input name="slug" value="<%= p.slug || '' %>" placeholder="auto from title" pattern="[a-z0-9-]*"></label>
+        <label>Year<input name="year" value="<%= p.year || '' %>" maxlength="20" placeholder="2024"></label>
+      </div>
+      <label>Category line <small class="muted">shown above the title, e.g. "Search · Data processing"</small><input name="kicker" value="<%= p.kicker || '' %>" maxlength="80"></label>
+      <label>Tags <small class="muted">comma separated</small><input name="tags" value="<%= (p.tags || []).join(', ') %>"></label>
+      <label>Summary <small class="muted">one or two sentences, used on cards and in search results</small><textarea name="summary" rows="2" maxlength="300"><%= p.summary || '' %></textarea></label>
+      <label>Case study <small class="muted">Markdown: **bold**, lists, headings, links</small><textarea name="body" rows="16" class="mono"><%= p.body || '' %></textarea></label>
+    </section>
+    <section class="card">
+      <h2>Details</h2>
+      <div class="three">
+        <label>Role<input name="role" value="<%= p.role || '' %>"></label>
+        <label>Team<input name="team" value="<%= p.team || '' %>"></label>
+        <label>Duration<input name="duration" value="<%= p.duration || '' %>"></label>
+      </div>
+      <div class="two">
+        <label>Headline result <small class="muted">e.g. +38%</small><input name="result_value" value="<%= p.result_value || '' %>" maxlength="30"></label>
+        <label>Result label <small class="muted">e.g. task completion</small><input name="result_label" value="<%= p.result_label || '' %>" maxlength="80"></label>
+      </div>
+      <div class="three">
+        <label>Live URL<input name="link_live" type="url" value="<%= (p.links || {}).live || '' %>"></label>
+        <label>Source URL<input name="link_repo" type="url" value="<%= (p.links || {}).repo || '' %>"></label>
+        <label>Paper / article URL<input name="link_paper" type="url" value="<%= (p.links || {}).paper || '' %>"></label>
+      </div>
+    </section>
+  </div>
+  <div class="aside">
+    <section class="card">
+      <h2>Publish</h2>
+      <label class="check"><input type="radio" name="status" value="published" <%= p.status !== 'draft' ? 'checked' : '' %>> Published</label>
+      <label class="check"><input type="radio" name="status" value="draft" <%= p.status === 'draft' ? 'checked' : '' %>> Draft (hidden)</label>
+      <label class="check"><input type="checkbox" name="featured" <%= p.featured ? 'checked' : '' %>> Featured</label>
+      <button class="btn primary wide"><%= isNew ? 'Create project' : 'Save changes' %></button>
+    </section>
+    <section class="card">
+      <h2>Cover image</h2>
+      <% if (p.cover) { %><img class="preview" src="<%= p.cover %>" alt=""><label class="check"><input type="checkbox" name="remove_cover"> Remove cover</label><% } else { %><p class="muted small">No image yet: the site draws a generated pattern. Upload a JPG, PNG or WebP (4:3 works best).</p><% } %>
+      <input type="file" name="cover" accept="image/*">
+      <div class="two">
+        <label>Pattern style<select name="seed"><% [1,2,3,4,5,6,7,8].forEach(n => { %><option value="<%= n %>" <%= Number(p.seed) === n ? 'selected' : '' %>>Pattern <%= n %></option><% }) %></select></label>
+        <label>Pattern colour<select name="hue"><% [['a','Blue & yellow'],['b','Ink & blue'],['c','Coral & yellow'],['d','Green & blue']].forEach(([v,l]) => { %><option value="<%= v %>" <%= p.hue === v ? 'selected' : '' %>><%= l %></option><% }) %></select></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Gallery</h2>
+      <% if ((p.gallery || []).length) { %><div class="gal"><% p.gallery.forEach(g => { %><label class="gitem"><img src="<%= g %>" alt=""><span><input type="checkbox" name="remove_gallery" value="<%= g %>"> remove</span></label><% }) %></div><% } %>
+      <input type="file" name="gallery" accept="image/*" multiple><p class="muted small">Up to 10 images per upload. Images are resized and converted to WebP automatically.</p>
+    </section>
+    <% if (!isNew) { %>
+    <section class="card danger">
+      <h2>Delete</h2>
+      <p class="muted small">Removes the project and its images. This cannot be undone.</p>
+    </section>
+    <% } %>
+  </div>
+</form>
+<% if (!isNew) { %>
+<form method="post" action="/admin/projects/<%= p.id %>/delete" class="delete-form" data-confirm="Delete “<%= p.title %>” permanently?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn danger">Delete project</button></form>
+<% } %>
+<%- include('_bottom') %>

@@ -1,0 +1,73 @@
+<%- include('_top', { title }) %>
+<div class="page-head"><h1>Site content</h1><a class="btn" href="/" target="_blank">View site &nearr;</a></div>
+<% if (error) { %><div class="alert"><%= error %></div><% } %>
+<form method="post" action="/admin/content" enctype="multipart/form-data" class="stack">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <section class="card">
+    <h2>Identity</h2>
+    <div class="three">
+      <label>Name<input name="name" value="<%= s.name %>" required></label>
+      <label>Initials <small class="muted">logo</small><input name="initials" value="<%= s.initials %>" maxlength="3"></label>
+      <label>Job title<input name="title" value="<%= s.title %>"></label>
+    </div>
+    <label>Tagline <small class="muted">used in metadata</small><input name="tagline" value="<%= s.tagline %>"></label>
+    <label>Hero eyebrow <small class="muted">small line above the headline</small><input name="eyebrow" value="<%= s.eyebrow %>"></label>
+    <label>Headline <small class="muted">wrap a phrase in *asterisks* to highlight it</small><input name="headline" value="<%= s.headline %>" required></label>
+    <label>Rotating roles <small class="muted">one per line</small><textarea name="roles" rows="4"><%= (s.roles || []).join('\n') %></textarea></label>
+    <div class="three">
+      <label>Location<input name="location" value="<%= s.location %>"></label>
+      <label>Time zone <small class="muted">IANA, e.g. Asia/Kolkata</small><input name="timezone" value="<%= s.timezone %>"></label>
+      <label>Contact email<input name="email" type="email" value="<%= s.email %>"></label>
+    </div>
+    <div class="two">
+      <label class="check"><input type="checkbox" name="available" <%= s.available ? 'checked' : '' %>> Show availability dot</label>
+      <label>Availability text<input name="availability_text" value="<%= s.availability_text %>"></label>
+    </div>
+    <label>Résumé <small class="muted">upload a PDF or paste a link</small>
+      <% if (s.resume_url) { %><span class="muted small">Current: <a href="<%= s.resume_url %>" target="_blank"><%= s.resume_url %></a> · <label class="inline"><input type="checkbox" name="remove_resume"> remove</label></span><% } %>
+      <input type="file" name="resume" accept="application/pdf"><input name="resume_url" placeholder="https://… (optional link instead of upload)" value="">
+    </label>
+  </section>
+  <section class="card">
+    <h2>Skills marquee <small class="muted">comma separated</small></h2>
+    <textarea name="skills" rows="2"><%= (s.skills || []).join(', ') %></textarea>
+  </section>
+  <section class="card">
+    <h2>About</h2>
+    <label>Heading<textarea name="about_heading" rows="2"><%= s.about_heading %></textarea></label>
+    <label>Paragraphs <small class="muted">separate paragraphs with a blank line</small><textarea name="about" rows="7"><%= (s.about || []).join('\n\n') %></textarea></label>
+    <h3>Stats</h3>
+    <div class="repeat" data-repeat>
+      <% [...(s.stats || []), {}, {}].slice(0, Math.max(3, (s.stats || []).length + 1)).forEach(st => { %><div class="two row"><input name="stat_value" placeholder="6+" value="<%= st.value || '' %>"><input name="stat_label" placeholder="years in the field" value="<%= st.label || '' %>"></div><% }) %>
+    </div>
+  </section>
+  <section class="card">
+    <h2>What I do <small class="muted">accordion, leave a title empty to drop a row</small></h2>
+    <% [...(s.what_i_do || []), {}].forEach(w => { %><div class="row stack-sm"><input name="wid_title" placeholder="Area title" value="<%= w.title || '' %>"><textarea name="wid_text" rows="2" placeholder="Description"><%= w.text || '' %></textarea></div><% }) %>
+  </section>
+  <section class="card">
+    <h2>Experience timeline <small class="muted">newest first</small></h2>
+    <% [...(s.timeline || []), {}].forEach(t => { %><div class="row tl-row"><input name="tl_when" placeholder="2023 — now" value="<%= t.when || '' %>"><input name="tl_title" placeholder="Role · Company" value="<%= t.title || '' %>"><input name="tl_text" placeholder="One line about it" value="<%= t.text || '' %>"></div><% }) %>
+  </section>
+  <section class="card">
+    <h2>Technical skills <small class="muted">group name + comma-separated items</small></h2>
+    <% [...(s.skill_groups || []), {}].forEach(g => { %><div class="row sg-row"><input name="sg_name" placeholder="Languages" value="<%= g.name || '' %>"><input name="sg_items" placeholder="Swift, Java, Python" value="<%= (g.items || []).join(', ') %>"></div><% }) %>
+  </section>
+  <section class="card">
+    <h2>Engineering approach &amp; goal</h2>
+    <label>Approach points <small class="muted">one per line</small><textarea name="approach" rows="7"><%= (s.approach || []).join('\n') %></textarea></label>
+    <label>Career goal<textarea name="career_goal" rows="3"><%= s.career_goal %></textarea></label>
+  </section>
+  <section class="card">
+    <h2>Social links <small class="muted">empty URL hides the link</small></h2>
+    <% [...(s.socials || []), {}].forEach(so => { %><div class="two row"><input name="social_label" placeholder="GitHub" value="<%= so.label || '' %>"><input name="social_url" type="url" placeholder="https://github.com/…" value="<%= so.url || '' %>"></div><% }) %>
+  </section>
+  <section class="card">
+    <h2>SEO</h2>
+    <label>Meta description <small class="muted">~155 characters</small><textarea name="seo_description" rows="3" maxlength="300"><%= (s.seo || {}).description || '' %></textarea></label>
+    <label>Keywords<input name="seo_keywords" value="<%= (s.seo || {}).keywords || '' %>"></label>
+  </section>
+  <div class="sticky-save"><button class="btn primary">Save content</button><span class="muted small">Changes appear on the site immediately.</span></div>
+</form>
+<form method="post" action="/admin/content/reset" class="delete-form" style="margin-top:32px" data-confirm="Reset all site content to the built-in defaults? Projects are not affected."><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn danger small">Reset content to defaults</button></form>
+<%- include('_bottom') %>

@@ -1,0 +1,25 @@
+<%- include('_top', { title }) %>
+<div class="page-head"><h1>Dashboard</h1><a class="btn primary" href="/admin/projects/new">+ New project</a></div>
+<div class="tiles">
+  <a class="tile" href="/admin/projects"><b><%= published %></b><span>published projects</span><% if (drafts) { %><small><%= drafts %> draft<%= drafts > 1 ? 's' : '' %></small><% } %></a>
+  <a class="tile" href="/admin/analytics"><b><%= stats.totals.views || 0 %></b><span>page views · 30 days</span><small><%= stats.totals.visitors || 0 %> unique visitors</small></a>
+  <a class="tile" href="/admin/messages"><b><%= unread %></b><span>unread messages</span><small><%= mail ? 'Email notifications on' : 'Email not configured' %></small></a>
+  <a class="tile" href="/admin/analytics"><b><%= stats.totals.not_found || 0 %></b><span>broken-link hits · 30 days</span></a>
+</div>
+<div class="cols">
+  <section class="card">
+    <h2>Recent messages</h2>
+    <% if (!recent.length) { %><p class="muted">Nothing yet. Messages from the site's contact form land here.</p><% } %>
+    <ul class="list"><% recent.forEach(m => { %><li><b><%= m.name %></b> <span class="muted">&lt;<%= m.email %>&gt;</span><br><span class="muted small"><%= m.subject || '(no subject)' %> · <%= m.created_at %></span></li><% }) %></ul>
+  </section>
+  <section class="card">
+    <h2>Quick links</h2>
+    <ul class="list">
+      <li><a href="/admin/content">Edit headline, bio, skills, timeline and socials</a></li>
+      <li><a href="/admin/projects">Reorder or publish projects</a></li>
+      <li><a href="/sitemap.xml" target="_blank">sitemap.xml</a> · <a href="/og/default.png" target="_blank">social preview image</a></li>
+      <li><a href="/" target="_blank">Open the live site</a></li>
+    </ul>
+  </section>
+</div>
+<%- include('_bottom') %>

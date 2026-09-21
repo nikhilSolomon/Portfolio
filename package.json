@@ -1,0 +1,31 @@
+{
+  "name": "nikhilsolomon.com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio site with admin panel, Express + SQLite",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch-path=server.js --watch-path=src --watch-path=views --watch-path=public --watch-preserve-output server.js",
+    "build": "node scripts/build-static.js",
+    "export": "node scripts/export-content.js",
+    "preview": "npx --yes serve dist -l 4173",
+    "seed": "node scripts/seed.js",
+    "reset-password": "node scripts/reset-password.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-session": "^2.1.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.22.3",
+    "express-rate-limit": "^8.7.0",
+    "marked": "^15.0.7",
+    "multer": "^2.4.0",
+    "nodemailer": "^10.0.10",
+    "sharp": "^0.35.4"
+  }
+}

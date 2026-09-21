@@ -1,0 +1,46 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main class="pp">
+  <div class="wrap">
+    <a class="back" href="/#work"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>All work</a>
+    <p class="mono"><%= p.kicker %><%= p.year ? ' · ' + p.year : '' %></p>
+    <h1><%= p.title %></h1>
+    <p class="lede"><%= p.summary %></p>
+    <div class="hero-cover"><% if (p.cover) { %><img src="<%= p.cover %>" alt="<%= p.title %> cover"><% } else { %><canvas data-seed="<%= p.seed %>" data-hue="<%= p.hue %>"></canvas><% } %></div>
+    <div class="layout">
+      <article>
+        <div class="body"><%- bodyHtml %></div>
+        <% if (p.gallery.length) { %><div class="gallery"><% p.gallery.forEach(g => { %><img src="<%= g %>" alt="<%= p.title %> screenshot" loading="lazy"><% }) %></div><% } %>
+      </article>
+      <aside>
+        <% if (p.role) { %><div><span class="mono">Role</span><b><%= p.role %></b></div><% } %>
+        <% if (p.team) { %><div><span class="mono">Team</span><b><%= p.team %></b></div><% } %>
+        <% if (p.duration) { %><div><span class="mono">Duration</span><b><%= p.duration %></b></div><% } %>
+        <% if (p.result_value) { %><div><span class="mono">Outcome</span><b style="color:var(--accent)"><%= p.result_value %></b><span style="color:var(--ink-2);font-size:.9rem"><%= p.result_label %></span></div><% } %>
+        <div class="tags"><% p.tags.forEach(t => { %><span class="tag"><%= t %></span><% }) %></div>
+        <% const L = p.links || {}; if (L.live || L.repo || L.paper) { %>
+        <div class="tags" style="margin-top:6px">
+          <% if (L.live) { %><a class="btn" href="<%= L.live %>" target="_blank" rel="noopener"><span>Live site &nearr;</span></a><% } %>
+          <% if (L.repo) { %><a class="btn" href="<%= L.repo %>" target="_blank" rel="noopener"><span>Source &nearr;</span></a><% } %>
+          <% if (L.paper) { %><a class="btn" href="<%= L.paper %>" target="_blank" rel="noopener"><span>Read the paper &nearr;</span></a><% } %>
+        </div>
+        <% } %>
+      </aside>
+    </div>
+    <% if (others.length) { %>
+    <div class="more">
+      <h2>More work</h2>
+      <div class="work-grid">
+        <% others.forEach(o => { %>
+        <a class="card" href="/work/<%= o.slug %>">
+          <div class="cover"><% if (o.cover) { %><img src="<%= o.cover %>" alt="<%= o.title %> cover" loading="lazy"><% } else { %><canvas data-seed="<%= o.seed %>" data-hue="<%= o.hue %>"></canvas><% } %><span class="peek"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+          <div class="card-meta"><h3><span><%= o.title %></span></h3><span class="mono"><%= o.year %></span></div>
+          <div class="tags"><% o.tags.forEach(t => { %><span class="tag"><%= t %></span><% }) %></div>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</main>
+<%- include('partials/footer') %>

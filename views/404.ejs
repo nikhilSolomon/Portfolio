@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main class="pp">
+  <div class="wrap" style="min-height:50vh;display:grid;align-content:center">
+    <span class="mono">Error 404 &middot; Page not found</span>
+    <div class="code" aria-label="404" style="font-family:var(--display);font-weight:800;font-size:clamp(6rem,26vw,16rem);line-height:.85;letter-spacing:-.06em;display:flex;margin:10px 0 18px"><span>4</span><span style="color:var(--accent)">0</span><span>4</span></div>
+    <h1 style="font-size:clamp(1.8rem,4.5vw,3.2rem);max-width:18ch">This page wandered off the map.</h1>
+    <p class="lede">The link may be old, mistyped, or the page has moved. Head back to the start, or jump straight to a section.</p>
+    <div style="display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:10px 14px;border-radius:12px;border:1px dashed var(--line-strong);font-family:var(--mono);font-size:.85rem;color:var(--ink-2);max-width:100%;word-break:break-all;width:max-content"><span class="mono">You tried</span><b style="color:#E5484D;font-weight:500" id="triedPath"><%= path %></b></div>
+    <div class="cta" style="margin-top:36px">
+      <a class="btn primary" href="/"><span>Take me home</span></a>
+      <a class="btn" href="/#work"><span>See the work</span></a>
+      <a class="btn" href="/#contact"><span>Report a broken link</span></a>
+    </div>
+  </div>
+</main>
+<% if (typeof staticMode !== 'undefined' && staticMode) { %><script>document.getElementById('triedPath').textContent = location.pathname + location.search;</script><% } %>
+<%- include('partials/footer') %>
